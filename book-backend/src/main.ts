@@ -1,8 +1,46 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { ResponseInterceptor } from './utils/interceptor';
+import { GlobalExceptionFilter } from './utils/filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+
+  app.setGlobalPrefix('api');
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist : true,
+      forbidNonWhitelisted : true,
+      transform : true,
+      exceptionFactory : (errors) => {
+        return new BadRequestException(
+          errors.map(e => ({
+            field : e.property,
+            errors : Object.values(e.constraints ?? {})
+          }))
+        )
+      }
+    })
+  )
+
+  app.useGlobalFilters(new GlobalExceptionFilter())
+
+  app.useGlobalInterceptors(new ResponseInterceptor());
+
+  app.enableCors({
+    origin : '*',
+    credentials : true,
+  })
+
+  app.useLogger(['log', 'error', 'warn', 'debug'])
+
+  const port = process.env.PORT ?? 3000;
+
+  await app.listen(port);
+
+  console.log(`🚀 Server running at: http://localhost:${port}/api`);
 }
 bootstrap();
+
