@@ -11,7 +11,7 @@ import {
   isNull,
 } from 'drizzle-orm';
 
-export type CreateUserInput = InferInsertModel<typeof userTable>;
+export type User = InferInsertModel<typeof userTable>;
 
 export type FindUserQuery = {
   page?: number;
@@ -32,7 +32,7 @@ export class UserRepository {
       .limit(1);
   }
 
-  async createUser(userData: CreateUserInput) {
+  async createUser(userData: User) {
     return this.drizzle.db.insert(userTable).values(userData).returning();
   }
 
@@ -53,7 +53,7 @@ export class UserRepository {
       .returning();
   }
 
-  async updateUser(id: string, data: Partial<CreateUserInput>) {
+  async updateUser(id: string, data: Partial<User>) {
     return this.drizzle.db
       .update(userTable)
       .set(data)

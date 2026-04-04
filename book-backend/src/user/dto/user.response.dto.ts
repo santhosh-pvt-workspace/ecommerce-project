@@ -1,5 +1,5 @@
 import { userTable } from '@/database/schema/user.schema';
-import { CreateUserInput } from '../user.repository';
+
 
 type User = typeof userTable.$inferSelect;
 
