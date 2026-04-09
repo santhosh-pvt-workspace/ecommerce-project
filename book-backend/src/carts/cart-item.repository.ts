@@ -63,4 +63,14 @@ export class CartItemsRepository {
       .delete(cartItemTable)
       .where(eq(cartItemTable.cartId, cartId));
   }
+
+  async updateItemCart(cartItemId: string, cartId: string){
+    return this.drizzle.db
+      .update(cartItemTable)
+      .set({ cartId })
+      .where(
+        eq(cartItemTable.id, cartItemId)
+      );
+
+  }
 }

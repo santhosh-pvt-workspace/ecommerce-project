@@ -6,16 +6,20 @@ import { eq, and, InferInsertModel, InferSelectModel } from 'drizzle-orm';
 export type Cart = InferSelectModel<typeof cartTable>;
 export type NewCart = InferInsertModel<typeof cartTable>;
 
-
 @Injectable()
 export class CartRepository {
   constructor(private readonly drizzle: DatabaseService) {}
 
   // it can be used for both guest and user
   async addCart(data: { userId?: string; sessionId?: string }) {
+    const cleanData = {
+      userId: data.userId ?? null,
+      sessionId: data.sessionId ?? null,
+    };
+
     const [cart] = await this.drizzle.db
       .insert(cartTable)
-      .values(data)
+      .values(cleanData)
       .returning();
 
     return cart;
@@ -60,20 +64,19 @@ export class CartRepository {
       .where(eq(cartTable.id, cartId));
   }
 
-  async findOrCreateOne({userId, sessionId}){
+  async findOrCreateOne({ userId, sessionId }) {
+    let cart: Cart;
 
-    let cart: Cart
-
-    if(userId){
-        cart = await this.findbyUserId(userId)
-        if (cart) return cart;
+    if (userId) {
+      cart = await this.findbyUserId(userId);
+      if (cart) return cart;
     }
 
-    if(sessionId){
-        cart = await this.findBySessionId(sessionId);
-        if(cart) return cart;
+    if (sessionId) {
+      cart = await this.findBySessionId(sessionId);
+      if (cart) return cart;
     }
 
-    return this.addCart({userId, sessionId});
+    return this.addCart({ userId, sessionId });
   }
 }
