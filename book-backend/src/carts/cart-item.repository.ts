@@ -1,6 +1,6 @@
 import { DatabaseService } from '@/database/database.service';
 import { cartItemTable, cartTable } from '@/database/schema';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { eq, and, InferInsertModel, InferSelectModel } from 'drizzle-orm';
 
 export type CartItem = InferSelectModel<typeof cartItemTable>;
@@ -19,7 +19,9 @@ export class CartItemsRepository {
   }
 
   async findByCartIdAndProductId(cartId: string, productId: string) {
-    const [item] = await this.drizzle.db
+
+    try{
+      const [item] = await this.drizzle.db
       .select()
       .from(cartItemTable)
       .where(
@@ -31,6 +33,11 @@ export class CartItemsRepository {
       .limit(1);
 
     return item;
+    }
+    catch(error){
+      throw new NotFoundException('Product item not found');
+    }
+    
   }
 
   async addItem(data: NewCartItem) {

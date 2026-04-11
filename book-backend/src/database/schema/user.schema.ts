@@ -17,7 +17,7 @@ export const userTable = pgTable('users', {
 
   role: roleEnum('role').notNull().default('user'),
 
-  passwordHash: varchar('password_hash').notNull(),
+  passwordHash: varchar('password_hash'),
   google_id: varchar('google_id'),
 
   mobileNumber: varchar('mobile_number', { length: 15 }).notNull(),

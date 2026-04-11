@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CartItemsRepository } from './cart-item.repository';
 import { CartRepository } from './cart.repository';
 
@@ -57,7 +57,7 @@ export class CartService {
 
   async updateCartItemsQuantity(cartItemId: string, quantity: number) {
     if (quantity <= 0) {
-      throw new Error('Quantity must be greater than 0');
+      throw new BadRequestException('Quantity must be greater than 0');
     }
 
     return this.cartItemsRepo.updateQuantity(cartItemId, quantity);
@@ -93,10 +93,9 @@ export class CartService {
         (item) => item.productId === guestItem.productId,
       );
 
-      console.log(existing);
-
       if (existing) {
-        return await this.cartItemsRepo.updateQuantity(
+        // ✅ No `return` here — must continue processing remaining items
+        await this.cartItemsRepo.updateQuantity(
           existing.id,
           existing.quantity + guestItem.quantity,
         );
@@ -105,6 +104,8 @@ export class CartService {
       }
     }
 
+    // Clear any remaining guest items before soft-deleting the cart
+    await this.cartItemsRepo.clearCart(guestCart.id);
     await this.cartRepo.softDeleteCart(guestCart.id);
 
     return userCart;

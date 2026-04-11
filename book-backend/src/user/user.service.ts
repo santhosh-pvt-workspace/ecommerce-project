@@ -1,10 +1,11 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { User, UserRepository } from './user.repository';
-import { RegisterRequestDto, LoginRequesDto } from './dto/user.request.dto';
+import { RegisterRequestDto, LoginRequestDto } from './dto/user.request.dto';
 import * as bcrypt from 'bcrypt';
 import { AuthResponseDto, UserResponseDto } from './dto/user.response.dto';
 import { AppJwtService } from '@/utils/jwt.utils';
@@ -38,7 +39,7 @@ export class UserService {
     return UserResponseDto.from(newUser);
   }
 
-  async loginUser(userData: LoginRequesDto) {
+  async loginUser(userData: LoginRequestDto) {
     const user = await this.userRepo.findByEmail(userData.email);
 
     if (!user) {
@@ -59,6 +60,21 @@ export class UserService {
 
     const token = this.jwtService.sign({ id, email });
 
-    return token;
+    // ✅ Return structured DTO instead of a raw JWT string
+    return AuthResponseDto.from({ token, isVerified: user.isVerified ?? false });
+  }
+
+  async getMe(userId: string) {
+    const [user] = await this.userRepo.findById(userId);
+    if (!user) {
+      // ✅ 404 NotFoundException is correct — user not found, not a bad request
+      throw new NotFoundException('User not found');
+    }
+    return UserResponseDto.from(user);
+  }
+
+  async getAllUsers() {
+    const usersData = await this.userRepo.findAll({ isActive: true });
+    return usersData.data.map((user) => UserResponseDto.from(user));
   }
 }

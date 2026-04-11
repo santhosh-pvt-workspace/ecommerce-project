@@ -7,11 +7,14 @@ import {
   eq,
   ilike,
   InferInsertModel,
+  InferSelectModel,
   isNotNull,
   isNull,
 } from 'drizzle-orm';
 
-export type User = InferInsertModel<typeof userTable>;
+// ✅ InferSelectModel for fetched rows (all fields exist), InferInsertModel for inserts
+export type User = InferSelectModel<typeof userTable>;
+export type NewUser = InferInsertModel<typeof userTable>;
 
 export type FindUserQuery = {
   page?: number;
@@ -32,7 +35,7 @@ export class UserRepository {
       .limit(1);
   }
 
-  async createUser(userData: User) {
+  async createUser(userData: NewUser) {
     return this.drizzle.db.insert(userTable).values(userData).returning();
   }
 

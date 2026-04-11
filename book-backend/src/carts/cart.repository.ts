@@ -1,6 +1,6 @@
 import { DatabaseService } from '@/database/database.service';
 import { cartTable } from '@/database/schema';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { eq, and, InferInsertModel, InferSelectModel } from 'drizzle-orm';
 
 export type Cart = InferSelectModel<typeof cartTable>;
@@ -60,11 +60,17 @@ export class CartRepository {
   async softDeleteCart(cartId: string) {
     return this.drizzle.db
       .update(cartTable)
-      .set({ status: 'abandoned' })
+      .set({ status: 'abandoned', deletedAt: new Date() })
       .where(eq(cartTable.id, cartId));
   }
 
-  async findOrCreateOne({ userId, sessionId }) {
+  async findOrCreateOne({ userId, sessionId }: { userId?: string; sessionId?: string }) {
+    if (!userId && !sessionId) {
+      throw new BadRequestException(
+        'Either a user session (x-session-id header) or an authenticated user is required to access a cart.',
+      );
+    }
+
     let cart: Cart;
 
     if (userId) {
