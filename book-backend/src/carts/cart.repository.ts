@@ -1,6 +1,11 @@
 import { DatabaseService } from '@/database/database.service';
 import { cartTable } from '@/database/schema';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { eq, and, InferInsertModel, InferSelectModel } from 'drizzle-orm';
 
 export type Cart = InferSelectModel<typeof cartTable>;
@@ -8,60 +13,48 @@ export type NewCart = InferInsertModel<typeof cartTable>;
 
 @Injectable()
 export class CartRepository {
-  constructor(private readonly drizzle: DatabaseService) {}
+  private readonly logger = new Logger(CartRepository.name);
 
-  // it can be used for both guest and user
-  async addCart(data: { userId?: string; sessionId?: string }) {
-    const cleanData = {
-      userId: data.userId ?? null,
-      sessionId: data.sessionId ?? null,
-    };
+  constructor(private readonly drizzle: DatabaseService) { }
 
-    const [cart] = await this.drizzle.db
-      .insert(cartTable)
-      .values(cleanData)
-      .returning();
-
-    return cart;
+  // ─── Internal Error Handler ────────────────────────────────────────────────
+  private handleError(method: string, error: unknown): never {
+    this.logger.error(`[CartRepository.${method}]`, error);
+    throw new InternalServerErrorException(
+      `A database error occurred in CartRepository.${method}`,
+    );
   }
 
-  async findbyUserId(userId: string) {
-    const [cart] = await this.drizzle.db
-      .select()
-      .from(cartTable)
-      .where(and(eq(cartTable.userId, userId), eq(cartTable.status, 'active')))
-      .limit(1);
+  // ─── Queries ───────────────────────────────────────────────────────────────
 
-    return cart;
+  async findbyUserId(userId: string) {
+    try {
+      const [cart] = await this.drizzle.db
+        .select()
+        .from(cartTable)
+        .where(and(eq(cartTable.userId, userId), eq(cartTable.status, 'active')))
+        .limit(1);
+
+      return cart;
+    } catch (error) {
+      this.handleError('findbyUserId', error);
+    }
   }
 
   async findBySessionId(sessionId: string) {
-    const [cart] = await this.drizzle.db
-      .select()
-      .from(cartTable)
-      .where(
-        and(eq(cartTable.sessionId, sessionId), eq(cartTable.status, 'active')),
-      )
-      .limit(1);
+    try {
+      const [cart] = await this.drizzle.db
+        .select()
+        .from(cartTable)
+        .where(
+          and(eq(cartTable.sessionId, sessionId), eq(cartTable.status, 'active')),
+        )
+        .limit(1);
 
-    return cart;
-  }
-
-  async updateCart(cartId: string, data: Partial<Cart>) {
-    const [cart] = await this.drizzle.db
-      .update(cartTable)
-      .set(data)
-      .where(eq(cartTable.id, cartId))
-      .returning();
-
-    return cart;
-  }
-
-  async softDeleteCart(cartId: string) {
-    return this.drizzle.db
-      .update(cartTable)
-      .set({ status: 'abandoned', deletedAt: new Date() })
-      .where(eq(cartTable.id, cartId));
+      return cart;
+    } catch (error) {
+      this.handleError('findBySessionId', error);
+    }
   }
 
   async findOrCreateOne({ userId, sessionId }: { userId?: string; sessionId?: string }) {
@@ -71,7 +64,7 @@ export class CartRepository {
       );
     }
 
-    let cart: Cart;
+    let cart: Cart | undefined;
 
     if (userId) {
       cart = await this.findbyUserId(userId);
@@ -84,5 +77,54 @@ export class CartRepository {
     }
 
     return this.addCart({ userId, sessionId });
+  }
+
+  // ─── Mutations ─────────────────────────────────────────────────────────────
+
+  // it can be used for both guest and user
+  async addCart(data: { userId?: string; sessionId?: string }) {
+    try {
+      const cleanData = {
+        userId: data.userId ?? null,
+        sessionId: data.sessionId ?? null,
+      };
+
+      const [cart] = await this.drizzle.db
+        .insert(cartTable)
+        .values(cleanData)
+        .returning();
+
+      return cart;
+    } catch (error) {
+      this.handleError('addCart', error);
+    }
+  }
+
+  async updateCart(cartId: string, data: Partial<Cart>) {
+    try {
+      const [cart] = await this.drizzle.db
+        .update(cartTable)
+        .set(data)
+        .where(eq(cartTable.id, cartId))
+        .returning();
+
+      return cart;
+    } catch (error) {
+      this.handleError('updateCart', error);
+    }
+  }
+
+  async softDeleteCart(cartId: string) {
+    try {
+      await this.drizzle.db
+        .update(cartTable)
+        .set({ status: 'abandoned', deletedAt: new Date() })
+        .where(eq(cartTable.id, cartId))
+        .returning();
+
+      return { message: "cart deleted successfully" }
+    } catch (error) {
+      this.handleError('softDeleteCart', error);
+    }
   }
 }

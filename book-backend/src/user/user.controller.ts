@@ -4,14 +4,15 @@ import { LoginRequestDto, RegisterRequestDto } from "./dto/user.request.dto";
 import { ApiDoc } from "@/common/api-doc.decorator";
 import { UserResponseDto } from "./dto/user.response.dto";
 import { JwtAuthGuard } from "@/utils/jwt.guard";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 
 @Controller('users')
-export class UserController{
+export class UserController {
 
     constructor(
-        private readonly userService : UserService
-    ){}
+        private readonly userService: UserService
+    ) { }
 
 
     @Post('/register')
@@ -21,7 +22,7 @@ export class UserController{
         successType: UserResponseDto,
         successStatus: 201
     })
-    async register(@Body() dto : RegisterRequestDto){
+    async register(@Body() dto: RegisterRequestDto) {
         return this.userService.registerUser(dto);
     }
 
@@ -30,11 +31,12 @@ export class UserController{
         summary: 'Login a user',
         bodyType: LoginRequestDto,
     })
-    async login(@Body() dto : LoginRequestDto){
+    async login(@Body() dto: LoginRequestDto) {
         return this.userService.loginUser(dto);
     }
 
     @Get('me')
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @ApiDoc({
         summary: 'Get current user profile',

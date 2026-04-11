@@ -60,9 +60,11 @@ export class CartItemsRepository {
   }
 
   async removeItem(cartItemId: string) {
-    return this.drizzle.db
+    await this.drizzle.db
       .delete(cartItemTable)
       .where(eq(cartItemTable.id, cartItemId));
+
+    return { message: 'Item removed from cart' };
   }
 
   async clearCart(cartId: string) {
