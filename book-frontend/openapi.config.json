@@ -1,0 +1,6 @@
+{
+    "supportsES6": true,
+    "modelPropertyNaming": "camelCase",
+    "useSingleRequestParameter": true,
+    "enumPropertyNaming": "camelCase"
+}
