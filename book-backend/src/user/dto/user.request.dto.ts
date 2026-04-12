@@ -36,14 +36,14 @@ export class RegisterRequestDto {
 
 export class LoginRequestDto {
   @ApiProperty({
-    example: 'john.doe@example.com',
+    example: 'santhosk.dev@gmail.com',
     description: 'The email address of the user',
   })
   @IsEmail()
   email: string;
 
   @ApiProperty({
-    example: 'password123',
+    example: 'Password@123',
     description: 'The password for the user account',
   })
   @MinLength(6)

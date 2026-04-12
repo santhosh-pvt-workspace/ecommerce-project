@@ -1,4 +1,6 @@
-# 📦 Product Module Documentation
+# 📦 Product Module Documentation (Production Ready)
+
+---
 
 ## 📌 Overview
 
@@ -6,6 +8,7 @@ The Product Module manages all product-related operations in the e-commerce syst
 
 * **Master Category**
 
+  * Stored in `cfg_master_category` table (to be newly created in `config.schema.ts`)
   * Example: Natural Products
 * **Category**
 
@@ -14,32 +17,36 @@ The Product Module manages all product-related operations in the e-commerce syst
 
   * Actual item displayed to users
 
+Roles-Based:
+Ensure that role guards are implemented so that only users with the admin role can perform product-related mutations.
+
 ---
 
 ## 🧱 Database Schema
 
 ### Table: `products`
 
-| Field           | Type          | Description                 |
-| --------------- | ------------- | --------------------------- |
-| id              | UUID          | Primary Key                 |
-| productName     | varchar(255)  | Product name                |
-| description     | text          | Product description         |
-| imageUrl        | varchar       | Cloudinary image URL        |
-| price           | numeric(10,2) | Product price               |
-| stock           | integer       | Available stock             |
-| offerPercentage | integer       | Discount percentage         |
-| isActive        | boolean       | Product visibility          |
-| soldBy          | varchar(255)  | Seller name                 |
-| promotionLabel  | varchar(255)  | Marketing label             |
-| brand           | varchar(255)  | Brand name                  |
-| ingredients     | text          | Ingredients (if applicable) |
-| rating          | numeric(2,1)  | Product rating              |
-| tags            | text[]        | Search tags                 |
-| specialFor      | text          | Target audience             |
-| categoryId      | UUID          | Foreign key (category)      |
-| createdAt       | timestamp     | Created time                |
-| updatedAt       | timestamp     | Updated time                |
+| Field           | Type          | Description                      |
+| --------------- | ------------- | -------------------------------- |
+| id              | UUID          | Primary Key                      |
+| productName     | varchar(255)  | Product name                     |
+| description     | text          | Product description              |
+| imageUrl        | varchar       | Cloudinary image URL             |
+| imagePublicId   | varchar       | Cloudinary public ID             |
+| price           | numeric(10,2) | Product price                    |
+| stock           | integer       | Available stock                  |
+| offerPercentage | integer       | Discount percentage (0–100)      |
+| isActive        | boolean       | Product visibility (soft delete) |
+| soldBy          | varchar(255)  | Seller name                      |
+| promotionLabel  | varchar(255)  | Marketing label                  |
+| brand           | varchar(255)  | Brand name                       |
+| ingredients     | text          | Ingredients (if applicable)      |
+| rating          | numeric(2,1)  | Product rating                   |
+| tags            | text[]        | Search tags                      |
+| specialFor      | text          | Target audience                  |
+| categoryId      | UUID          | Foreign key (category)           |
+| createdAt       | timestamp     | Created time                     |
+| updatedAt       | timestamp     | Updated time                     |
 
 ### Index
 
@@ -56,7 +63,6 @@ product/
 ├── service/
 ├── repository/
 ├── dto/
-├── schema/
 ```
 
 ---
@@ -66,27 +72,28 @@ product/
 ### 🗂️ Controller
 
 * Handle HTTP requests
-* Provide clean Swagger documentation
+* Provide Swagger documentation
 * Delegate logic to service layer
+* Return proper status codes
 
 ### 🧠 Service
 
-* Contains business logic
-* Validations (stock, price, active status)
-* Handles DTO transformations
-* Throws meaningful business errors
+* Business logic
+* Validations
+* DTO transformations
+* Throw meaningful errors
 
 ### 🗃️ Repository
 
 * Direct DB interaction
-* Always use `try-catch`
-* Return structured DB errors
+* Use try-catch for DB errors
+* No business logic
 
 ### 📦 DTO
 
 * Request & Response models
-* Clean Swagger decorators
-* Separate DTOs if response is large
+* Validation decorators
+* Separate DTOs for create/update/response
 
 ---
 
@@ -96,8 +103,10 @@ product/
 
 * Create product
 * Update product
-* Delete product
+* Soft delete product
 * Get product by ID
+
+---
 
 ### 2. Product Listing
 
@@ -110,16 +119,29 @@ product/
   * Price range
   * Rating
 
+---
+
 ### 3. Search & Filtering
 
-* Keyword search (productName, tags)
-* Category-based filtering
-* Active products only
+Search applies to:
 
+* `productName` (ILIKE)
+* `tags` (array search)
+
+Example:
+
+```
+GET /products?search=shampoo
+```
+
+---
+
+### 4. Query DTO
+
+```ts
 export class QueryProductDto {
   search?: string;
   category?: string;
-  skinType?: string;
   minPrice?: number;
   maxPrice?: number;
   sortBy?: 'price' | 'rating' | 'createdAt';
@@ -127,59 +149,189 @@ export class QueryProductDto {
   page?: number;
   limit?: number;
 }
+```
 
-### 4. Inventory Management
+### Default Behavior
 
-* Stock update
-* Prevent purchase when stock = 0
+* Default sorting → `createdAt DESC`
+* Only `isActive = true` products shown to users
+
+---
+
+### 5. Pagination
+
+#### Request
+
+```
+GET /products?page=1&limit=10
+```
+
+#### Response
+
+```json
+{
+  "data": [],
+  "meta": {
+    "total": 100,
+    "page": 1,
+    "limit": 10
+  }
+}
+```
+
+---
+
+### 6. Inventory Management
+
+* Stock update API
+* Prevent purchase when `stock = 0`
+
+---
+
+## 📦 DTOs
+
+### Create Product DTO
+
+The earlier DTO was simplified for basic operations, but in a real production system you should include all fields that are required to create a complete product. Fields like description, brand, promotionLabel, tags, soldBy, ingredients, and specialFor are essential for frontend display and should be part of the DTO.
+
+```ts
+export class CreateProductDto {
+  productName: string;
+  description: string;
+  price: number;
+  stock: number;
+  categoryId: string;
+
+  imageUrl?: string;
+  imagePublicId?: string;
+
+  brand?: string;
+  promotionLabel?: string;
+  soldBy?: string;
+  ingredients?: string;
+  specialFor?: string;
+
+  tags?: string[];
+  offerPercentage?: number;
+}
+```
+
+---
+
+### Update Product DTO
+
+Update DTO should allow partial updates for all editable fields.
+
+```ts
+export class UpdateProductDto {
+  productName?: string;
+  description?: string;
+  price?: number;
+  stock?: number;
+
+  brand?: string;
+  promotionLabel?: string;
+  soldBy?: string;
+  ingredients?: string;
+  specialFor?: string;
+
+  tags?: string[];
+  offerPercentage?: number;
+
+  imageUrl?: string;
+  imagePublicId?: string;
+}
+```
+
+---
+
+### Response DTO
+
+Response DTO must include all fields required by the frontend to render product details. You can also create multiple response DTOs (e.g., list view vs detail view), but below is a full version.
+
+```ts
+export class ProductResponseDto {
+  id: string;
+  productName: string;
+  description: string;
+
+  imageUrl: string;
+  price: number;
+  rating: number;
+  isActive: boolean;
+
+  brand?: string;
+  promotionLabel?: string;
+  soldBy?: string;
+  ingredients?: string;
+  specialFor?: string;
+
+  tags?: string[];
+  offerPercentage?: number;
+}
+```
+
+---
+
+### ✅ Key Explanation
+
+* Those fields were not included earlier because the DTO was simplified for demonstration.
+* In real-world applications, DTOs must reflect all data needed by the frontend.
+* If you want better performance, you can create:
+
+  * ProductListResponseDto → minimal fields for listing
+  * ProductDetailResponseDto → full fields for product page
+
+This ensures flexibility, scalability, and optimized API responses.
 
 ---
 
 ## 🖼️ Image Upload Strategy
 
-* Use **Cloudinary**
-* Steps:
+We use Cloudinary via the Storage Module. already create file services on file.service.ts
 
-  1. Upload image from frontend
-  2. Backend sends to Cloudinary
-  3. Receive image URL
-  4. Store URL in `imageUrl`
+### Flow:
+
+1. Frontend uploads image → `/upload/image`
+2. Backend uploads to Cloudinary
+3. Receive:
+
+   * `imageUrl`
+   * `imagePublicId`
+4. Pass both to Product API
+5. Store in DB
 
 ---
 
-## 🧼 Code Quality Rules
+## ✅ Validation Rules
 
-### Repository Layer
+* `productName` → required, min 3 chars
+* `price` → must be > 0
+* `stock` → must be ≥ 0
+* `categoryId` → must exist
+* `offerPercentage` → 0–100 only
 
-* Always use `try-catch`
-* Return clean DB errors
-* No business logic
+---
 
-### Service Layer
+## 🗑️ Deletion Strategy
 
-* Only business logic
-* Use DTOs strictly
-* Validate:
+* Use **soft delete** → `isActive = false`
+* Hard delete only for admin/internal use
 
-  * Price > 0
-  * Stock ≥ 0
-  * Category exists
-* Return meaningful error messages
+---
 
-### Controller Layer
+## 🔐 Authorization
 
-* Clean Swagger docs
-* No business logic
-* Proper status codes
+### Admin Only:
 
-### DTO Layer
+* Create product
+* Update product
+* Delete product
+* Update stock/status
 
-* Separate:
+### Users:
 
-  * Create DTO
-  * Update DTO
-  * Response DTO
-* Use validation decorators
+* View products only
 
 ---
 
@@ -187,59 +339,87 @@ export class QueryProductDto {
 
 * Product without category → reject
 * Negative price or stock → reject
-* Inactive product should not be visible
-* Large response → use pagination
-* Missing image → allow but optional fallback
+* Inactive product hidden from users
+* Missing image → allow fallback
+* Large data → enforce pagination
+
+---
+
+## 🔗 API Design
+
+### Product APIs
+
+```
+POST   /products
+GET    /products
+GET    /products/:id
+PATCH  /products/:id
+DELETE /products/:id
+```
+
+---
+
+### Advanced APIs (Production)
+
+```
+PATCH  /products/:id/status     → activate/deactivate
+PATCH  /products/:id/stock      → update stock
+GET    /products/admin          → include inactive products
+```
+
+---
+
+### Filtering Example
+
+```
+GET /products?categoryId=&minPrice=&maxPrice=&search=
+```
+
+---
+
+## 📘 OpenAPI Contract
+
+* All APIs must be Swagger documented
+* DTOs must be used for request/response
+* Do NOT expose raw DB entities
+* Use proper HTTP status codes
+
+---
+
+## 🧼 Code Quality Rules
+
+### Repository
+
+* Always use try-catch
+* Return structured DB errors
+* No business logic
+
+### Service
+
+* Business logic only
+* Validate all inputs
+* Throw meaningful errors
+
+### Controller
+
+* No business logic
+* Clean Swagger docs
+* Proper responses
+
+### DTO
+
+* Use validation decorators
+* Separate request/response models
 
 ---
 
 ## 🚀 Future Enhancements
 
-* Pagination & infinite scroll
+* Pagination with infinite scroll
 * Product reviews system
 * Wishlist integration
 * Recommendation engine
-* Elastic search for fast querying
-
----
-
-## 🔗 API Design (Sample)
-
-### Create Product
-
-```
-POST /products
-```
-
-### Get All Products
-
-```
-GET /products
-```
-
-### Filter Products
-
-```
-GET /products?categoryId=&minPrice=&maxPrice=
-```
-
-### Get Product by ID
-
-```
-GET /products/:id
-```
-
-### Update Product
-
-```
-PATCH /products/:id
-```
-
-### Delete Product
-
-```
-DELETE /products/:id
-```
+* ElasticSearch integration
 
 ---
 
@@ -248,6 +428,9 @@ DELETE /products/:id
 This module ensures:
 
 * Clean architecture (Controller → Service → Repository)
-* Scalable product handling
+* Scalable and maintainable structure
 * Efficient filtering and querying
-* Maintainable and AI-agent-friendly structure
+* Production-ready API design
+* AI-agent-friendly documentation
+
+---

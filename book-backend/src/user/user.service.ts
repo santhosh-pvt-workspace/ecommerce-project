@@ -15,7 +15,7 @@ export class UserService {
   constructor(
     private readonly userRepo: UserRepository,
     private readonly jwtService: AppJwtService,
-  ) {}
+  ) { }
 
   async registerUser(userData: RegisterRequestDto) {
     const isExistingUser = await this.userRepo.findByEmail(userData.email);
@@ -58,7 +58,7 @@ export class UserService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const token = this.jwtService.sign({ id, email });
+    const token = this.jwtService.sign({ id, email, role: user.role });
 
     // ✅ Return structured DTO instead of a raw JWT string
     return AuthResponseDto.from({ token, isVerified: user.isVerified ?? false });

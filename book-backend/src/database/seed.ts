@@ -4,6 +4,8 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { categoryTable } from './schema/config.schema';
 import { productTable } from './schema/product.schema';
 
+type PromotionLabel = 'New Arrival' | 'Best Seller' | 'Clearance' | 'Hot Deal' | 'Limited Edition';
+
 config(); // load .env
 
 const pool = new Pool({
@@ -42,7 +44,7 @@ async function main() {
       stock: 50,
       brand: 'Apple',
       soldBy: 'Official Store',
-      promotionLabel: 'New Arrival',
+      promotionLabel: 'New Arrival' as PromotionLabel,
       rating: '4.9',
       tags: ['electronics', 'mobile', 'smartphone'],
       specialFor: 'Photography enthusiasts',
@@ -56,7 +58,7 @@ async function main() {
       stock: 30,
       brand: 'Sony',
       soldBy: 'Tech Hub',
-      promotionLabel: 'Best Seller',
+      promotionLabel: 'Best Seller' as PromotionLabel,
       rating: '4.8',
       tags: ['audio', 'headphones', 'wireless'],
       specialFor: 'Commuters and travelers',
@@ -70,7 +72,7 @@ async function main() {
       stock: 100,
       brand: 'Nike',
       soldBy: 'Nike Official',
-      promotionLabel: 'Clearance',
+      promotionLabel: 'Clearance' as PromotionLabel,
       rating: '4.6',
       tags: ['shoes', 'sneakers', 'lifestyle'],
       specialFor: 'Active lifestyle',
@@ -84,7 +86,7 @@ async function main() {
       stock: 20,
       brand: 'Dyson',
       soldBy: 'Home Pro',
-      promotionLabel: 'Hot Deal',
+      promotionLabel: 'Hot Deal' as PromotionLabel,
       rating: '4.7',
       tags: ['appliance', 'home', 'vacuum'],
       specialFor: 'Deep cleaning',

@@ -8,7 +8,7 @@ export class AppJwtService {
         private readonly jwtService: JwtService
     ) { }
 
-    sign(payload: { id: string; email: string; }) {
+    sign(payload: { id: string; email: string; role: string }) {
         return this.jwtService.sign(payload);
     }
 
