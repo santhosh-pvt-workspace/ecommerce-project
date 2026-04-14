@@ -7,8 +7,10 @@ import {
   Patch,
   Post,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { CartService } from './cart.service';
 import { AddToCartDto, UpdateCartItemDto } from './cart.request.dto';
 import { ApiDoc } from '@/common/api-doc.decorator';
@@ -20,37 +22,31 @@ export class CartController {
   constructor(private readonly cartService: CartService) { }
 
   // to create or get existing cart
-  @Get('list')
+  @Get()
   @ApiDoc({
     summary: 'Get current cart session',
     description: 'Retrieves the current cart for the user or guest session',
   })
-  async getCart(@Req() req: any) {
+  async getCart(@Req() req: any, @Res({ passthrough: true }) res: any) {
     const userId = req.user?.id;
-    const sessionId = req.headers['x-session-id'];
+    const sessionId = req.cookies?.['session_id'];
 
-    return this.cartService.getCart({ userId, sessionId });
+    return this.cartService.getCart({ userId, sessionId }, res);
   }
 
   // add items in the cart
   @Post('add')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiDoc({
     summary: 'Add item to cart',
     description: 'Adds a product to the cart or updates quantity if it already exists',
     bodyType: AddToCartDto,
   })
-  async addCart(@Body() dto: AddToCartDto, @Req() req: any) {
+  async addCart(@Body() dto: AddToCartDto, @Req() req: any, @Res({ passthrough: true }) res: any) {
+
     const userId = req.user?.id;
-    const sessionId = req.headers['x-session-id'];
-
-    console.log("ADD CART:", {
-      userId,
-      sessionId,
-      dto
-    });
-
+    const sessionId = req.cookies?.['session_id'];
 
     return this.cartService.addCartItems({
       userId: userId,
@@ -59,6 +55,7 @@ export class CartController {
       quantity: dto.quantity,
       // TODO: fetch actual product price from product service instead of hardcoding
       price: '100',
+      res
     });
   }
 

@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CartItemsRepository } from './cart-item.repository';
 import { CartRepository } from './cart.repository';
+import { v4 as uuidv4 } from 'uuid';
+import { Response } from 'express';
 
 
 @Injectable()
@@ -8,13 +10,33 @@ export class CartService {
   constructor(
     private readonly cartRepo: CartRepository,
     private readonly cartItemsRepo: CartItemsRepository,
-  ) {}
+  ) { }
 
-  async getCart(data: { userId?: string; sessionId?: string }) {
-    return await this.cartRepo.findOrCreateOne({
-      userId: data.userId,
-      sessionId: data.sessionId,
-    });
+  async getCart(data: { userId?: string; sessionId?: string }, res?: Response) {
+    let { userId, sessionId } = data;
+
+    // 1. If user is logged in, use userId
+    if (userId) {
+      return this.cartRepo.findOrCreateOne({ userId });
+    }
+
+    // 2. If guest has a session cookie, use it
+    if (sessionId) {
+      return this.cartRepo.findOrCreateOne({ sessionId });
+    }
+
+    // 3. New guest: Generate sessionId and set cookie
+    const newSessionId = uuidv4();
+    if (res) {
+      res.cookie('session_id', newSessionId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
+    }
+
+    return this.cartRepo.findOrCreateOne({ sessionId: newSessionId });
   }
 
   async addCartItems({
@@ -23,15 +45,17 @@ export class CartService {
     productId,
     quantity,
     price,
+    res,
   }: {
     userId?: string;
     sessionId?: string;
     productId: string;
     quantity: number;
     price: string;
+    res?: Response;
   }) {
-    // get cart
-    const cart = await this.getCart({ userId, sessionId });
+    // get cart (this will set cookie if it's a new guest session)
+    const cart = await this.getCart({ userId, sessionId }, res);
 
     // check existing item
     const existingItem = await this.cartItemsRepo.findByCartIdAndProductId(

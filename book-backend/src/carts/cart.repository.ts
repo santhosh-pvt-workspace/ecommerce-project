@@ -60,7 +60,7 @@ export class CartRepository {
   async findOrCreateOne({ userId, sessionId }: { userId?: string; sessionId?: string }) {
     if (!userId && !sessionId) {
       throw new BadRequestException(
-        'Either a user session (x-session-id header) or an authenticated user is required to access a cart.',
+        'A user ID or session ID is required to access a cart.',
       );
     }
 

@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { productQueries } from "@/queries/product/product.query";
+import ProductSection from "@/components/ProductList";
+import CategorySection from "@/components/CategorySection";
 
 export const HomePage = () => {
   const { data, isLoading, isError, error } = useQuery(productQueries.all());
@@ -40,6 +42,10 @@ export const HomePage = () => {
           ))}
         </div>
       )}
+
+      <ProductSection />
+
+      <CategorySection /> 
     </div>
   );
 };
