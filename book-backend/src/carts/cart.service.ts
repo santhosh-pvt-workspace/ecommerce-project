@@ -14,29 +14,30 @@ export class CartService {
 
   async getCart(data: { userId?: string; sessionId?: string }, res?: Response) {
     let { userId, sessionId } = data;
+    let cart;
 
     // 1. If user is logged in, use userId
     if (userId) {
-      return this.cartRepo.findOrCreateOne({ userId });
+      cart = await this.cartRepo.findOrCreateOne({ userId });
+    } else if (sessionId) {
+      // 2. If guest has a session cookie, use it
+      cart = await this.cartRepo.findOrCreateOne({ sessionId });
+    } else {
+      // 3. New guest: Generate sessionId and set cookie
+      const newSessionId = uuidv4();
+      if (res) {
+        res.cookie('session_id', newSessionId, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        });
+      }
+      cart = await this.cartRepo.findOrCreateOne({ sessionId: newSessionId });
     }
 
-    // 2. If guest has a session cookie, use it
-    if (sessionId) {
-      return this.cartRepo.findOrCreateOne({ sessionId });
-    }
-
-    // 3. New guest: Generate sessionId and set cookie
-    const newSessionId = uuidv4();
-    if (res) {
-      res.cookie('session_id', newSessionId, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      });
-    }
-
-    return this.cartRepo.findOrCreateOne({ sessionId: newSessionId });
+    const items = await this.cartItemsRepo.findByCartId(cart.id);
+    return { ...cart, items };
   }
 
   async addCartItems({

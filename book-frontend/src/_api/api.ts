@@ -33,6 +33,24 @@ export interface AddToCartDto {
      */
     'quantity': number;
 }
+export interface CartItemResponseDto {
+    'id': string;
+    'cartId': string;
+    'productId': string;
+    'quantity': number;
+    'priceSnapshot': string;
+    'createdAt': string;
+    'updatedAt': string;
+}
+export interface CartResponseDto {
+    'id': string;
+    'userId'?: string | null;
+    'sessionId'?: string | null;
+    'status': string;
+    'items': Array<CartItemResponseDto>;
+    'createdAt': string;
+    'updatedAt': string;
+}
 export interface LoginRequestDto {
     /**
      * The email address of the user
@@ -215,6 +233,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -266,7 +285,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
          * @throws {RequiredError}
          */
         cartControllerGetCart: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/carts/list`;
+            const localVarPath = `/api/carts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -278,6 +297,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -381,6 +401,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarQueryParameter = {} as any;
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -421,7 +442,7 @@ export const CartApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cartControllerAddCart(addToCartDto: AddToCartDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async cartControllerAddCart(addToCartDto: AddToCartDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CartItemResponseDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cartControllerAddCart(addToCartDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CartApi.cartControllerAddCart']?.[localVarOperationServerIndex]?.url;
@@ -446,7 +467,7 @@ export const CartApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cartControllerGetCart(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async cartControllerGetCart(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CartResponseDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cartControllerGetCart(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CartApi.cartControllerGetCart']?.[localVarOperationServerIndex]?.url;
@@ -486,7 +507,7 @@ export const CartApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cartControllerUpdateCartItem(id: string, updateCartItemDto: UpdateCartItemDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async cartControllerUpdateCartItem(id: string, updateCartItemDto: UpdateCartItemDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CartItemResponseDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cartControllerUpdateCartItem(id, updateCartItemDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CartApi.cartControllerUpdateCartItem']?.[localVarOperationServerIndex]?.url;
@@ -518,7 +539,7 @@ export const CartApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cartControllerAddCart(requestParameters: CartApiCartControllerAddCartRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        cartControllerAddCart(requestParameters: CartApiCartControllerAddCartRequest, options?: RawAxiosRequestConfig): AxiosPromise<CartItemResponseDto> {
             return localVarFp.cartControllerAddCart(requestParameters.addToCartDto, options).then((request) => request(axios, basePath));
         },
         /**
@@ -537,7 +558,7 @@ export const CartApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cartControllerGetCart(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        cartControllerGetCart(options?: RawAxiosRequestConfig): AxiosPromise<CartResponseDto> {
             return localVarFp.cartControllerGetCart(options).then((request) => request(axios, basePath));
         },
         /**
@@ -567,7 +588,7 @@ export const CartApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cartControllerUpdateCartItem(requestParameters: CartApiCartControllerUpdateCartItemRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        cartControllerUpdateCartItem(requestParameters: CartApiCartControllerUpdateCartItemRequest, options?: RawAxiosRequestConfig): AxiosPromise<CartItemResponseDto> {
             return localVarFp.cartControllerUpdateCartItem(requestParameters.id, requestParameters.updateCartItemDto, options).then((request) => request(axios, basePath));
         },
     };

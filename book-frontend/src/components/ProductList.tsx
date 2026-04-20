@@ -5,7 +5,10 @@ import {
   Share2,
   ShoppingCart,
   Camera,
+  Loader2,
 } from "lucide-react";
+import { useAddToCart } from "../queries/cartQueries";
+import { useStore } from "../store";
 
 const images = [
   "https://assets.shadcnstore.com/shadcnstore.com/stock/e-commerce/wireless-charger.800w.a01e7a.avif",
@@ -27,6 +30,20 @@ const features = [
 const ProductSection: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [activeTab, setActiveTab] = useState("overview");
+  
+  const addToCart = useAddToCart();
+  const { cartStore } = useStore();
+
+  const handleAddToCart = () => {
+    addToCart.mutate(
+      { productId: "e123-hardcoded-for-now", quantity: 1 }, 
+      {
+        onSuccess: () => {
+          cartStore.openCart();
+        }
+      }
+    );
+  };
 
   return (
     <section className="py-12">
@@ -123,8 +140,13 @@ const ProductSection: React.FC = () => {
 
             {/* ACTIONS */}
             <div className="flex flex-col gap-3">
-              <button className="flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-lg hover:bg-primary/80 transition">
-                <ShoppingCart size={18} /> Add to Cart
+              <button 
+                onClick={handleAddToCart}
+                disabled={addToCart.isPending}
+                className="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+              >
+                {addToCart.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShoppingCart size={18} />} 
+                {addToCart.isPending ? "Adding..." : "Add to Cart"}
               </button>
 
               <div className="flex gap-3">

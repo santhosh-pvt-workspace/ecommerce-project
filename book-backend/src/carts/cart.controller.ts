@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { CartService } from './cart.service';
+import { CartResponseDto, CartItemResponseDto } from './cart.response.dto';
 import { AddToCartDto, UpdateCartItemDto } from './cart.request.dto';
 import { ApiDoc } from '@/common/api-doc.decorator';
 import { JwtAuthGuard } from '@/utils/jwt.guard';
@@ -26,6 +27,7 @@ export class CartController {
   @ApiDoc({
     summary: 'Get current cart session',
     description: 'Retrieves the current cart for the user or guest session',
+    successType: CartResponseDto,
   })
   async getCart(@Req() req: any, @Res({ passthrough: true }) res: any) {
     const userId = req.user?.id;
@@ -34,7 +36,6 @@ export class CartController {
     return this.cartService.getCart({ userId, sessionId }, res);
   }
 
-  // add items in the cart
   @Post('add')
   // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -42,6 +43,7 @@ export class CartController {
     summary: 'Add item to cart',
     description: 'Adds a product to the cart or updates quantity if it already exists',
     bodyType: AddToCartDto,
+    successType: CartItemResponseDto,
   })
   async addCart(@Body() dto: AddToCartDto, @Req() req: any, @Res({ passthrough: true }) res: any) {
 
@@ -66,6 +68,7 @@ export class CartController {
   @ApiDoc({
     summary: 'Update cart item quantity',
     bodyType: UpdateCartItemDto,
+    successType: CartItemResponseDto,
   })
   async updateCartItem(
     @Param('id') cartItemId: string,

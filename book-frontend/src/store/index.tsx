@@ -1,12 +1,15 @@
 import React, { createContext, useContext } from "react";
 import { authStore } from "./AuthStore";
+import { cartStore } from "./CartStore";
 
 interface StoreContextType {
   authStore: typeof authStore;
+  cartStore: typeof cartStore;
 }
 
 export const store = {
   authStore,
+  cartStore,
 };
 
 export const StoreContext = createContext<StoreContextType>(store);
