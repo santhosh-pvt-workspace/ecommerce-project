@@ -12,7 +12,7 @@ export class ProductResponseDto {
   productName: string;
 
   @ApiPropertyOptional({ example: 'A nourishing shampoo with pure Argan oil.' })
-  description: string | null;
+  description: string | undefined;
 
   @ApiPropertyOptional({ example: 'https://res.cloudinary.com/...' })
   imageUrl: string | null;
@@ -21,7 +21,7 @@ export class ProductResponseDto {
   imagePublicId: string | null;
 
   @ApiProperty({ example: '29.99' })
-  price: string;
+  price: number | null;
 
   @ApiProperty({ example: 100 })
   stock: number;
@@ -45,7 +45,7 @@ export class ProductResponseDto {
   ingredients: string | null;
 
   @ApiPropertyOptional({ example: '4.5' })
-  rating: string | null;
+  rating: number | null;
 
   @ApiPropertyOptional({ example: ['shampoo', 'hair care'], type: [String] })
   tags: string[] | null;
@@ -66,10 +66,10 @@ export class ProductResponseDto {
     return {
       id: product.id,
       productName: product.productName,
-      description: product.description ?? null,
+      description: product.description ?? undefined,
       imageUrl: product.imageUrl ?? null,
       imagePublicId: product.imagePublicId ?? null,
-      price: product.price,
+      price: Number(product.price),
       stock: product.stock,
       offerPercentage: product.offerPercentage ?? null,
       isActive: product.isActive ?? null,
@@ -77,7 +77,7 @@ export class ProductResponseDto {
       promotionLabel: product.promotionLabel ?? null,
       brand: product.brand ?? null,
       ingredients: product.ingredients ?? null,
-      rating: product.rating ?? null,
+      rating : Number(product.rating) ?? null,
       tags: product.tags ?? null,
       specialFor: product.specialFor ?? null,
       categoryId: product.categoryId ?? null,

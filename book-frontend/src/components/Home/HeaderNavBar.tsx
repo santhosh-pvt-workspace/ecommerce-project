@@ -6,7 +6,6 @@ import {
   Menu,
   ChevronDown,
   ChevronRight,
-  X,
 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/store";

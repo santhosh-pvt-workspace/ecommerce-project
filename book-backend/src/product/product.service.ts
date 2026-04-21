@@ -63,6 +63,7 @@ export class ProductService {
       productName: dto.productName,
       description: dto.description,
       price: String(dto.price),
+      rating : String(dto.rating),
       stock: dto.stock,
       categoryId: dto.categoryId,
       imageUrl,

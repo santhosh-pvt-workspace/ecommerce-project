@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { CartDrawer } from "../components/CartDrawer";
-import { HeaderNavBar } from "../components/HeaderNavBar";
+import { HeaderNavBar } from "../components/Home/HeaderNavBar";
 
 export const MainLayout: React.FC = () => {
   return (

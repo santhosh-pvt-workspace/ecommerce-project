@@ -47,6 +47,12 @@ export class CreateProductDto {
   @IsPositive()
   price: number;
 
+  @ApiProperty({ example: 29.99 })
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsPositive()
+  rating: number;
+
   @ApiProperty({ example: 100 })
   @Type(() => Number)
   @IsInt()

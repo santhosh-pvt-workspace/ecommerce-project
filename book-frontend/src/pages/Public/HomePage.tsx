@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { productQueries } from "@/queries/product/product.query";
 import ProductSection from "@/components/ProductList";
-import CategorySection from "@/components/CategorySection";
+import CategorySection from "@/components/Home/CategorySection";
 import HeroSection from "@/components/HeroSection";
+import { ProductCard } from "@/components/Home/ProductCard";
 
 export const HomePage = () => {
   const { data, isLoading, isError, error } = useQuery(productQueries.all());
@@ -34,7 +35,7 @@ export const HomePage = () => {
 
       <h1 className="text-3xl font-bold">Featured Products</h1>
 
-      {data?.data?.length === 0 ? (
+      {/* {data?.data?.length === 0 ? (
         <p className="text-gray-500">No products available.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -46,9 +47,19 @@ export const HomePage = () => {
             </div>
           ))}
         </div>
+      )} */}
+
+      {data?.data.length === 0 ? (
+        <p className="text-gray-500">No products available</p>
+      ) : (
+        <div className="grid grid-cols-4 gap-6">
+          {data?.data.map((product) => (
+            <ProductCard key={product.id} product={product as any}/>
+          ))}
+        </div>
       )}
 
-      <ProductSection />
+      {/* <ProductSection /> */}
 
       <CategorySection />
     </div>
