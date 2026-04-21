@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { productQueries } from "@/queries/product/product.query";
 import ProductSection from "@/components/ProductList";
 import CategorySection from "@/components/CategorySection";
+import HeroSection from "@/components/HeroSection";
 
 export const HomePage = () => {
   const { data, isLoading, isError, error } = useQuery(productQueries.all());
@@ -27,6 +28,10 @@ export const HomePage = () => {
 
   return (
     <div className="space-y-8">
+
+
+      <HeroSection />
+
       <h1 className="text-3xl font-bold">Featured Products</h1>
 
       {data?.data?.length === 0 ? (
@@ -45,7 +50,7 @@ export const HomePage = () => {
 
       <ProductSection />
 
-      <CategorySection /> 
+      <CategorySection />
     </div>
   );
 };
