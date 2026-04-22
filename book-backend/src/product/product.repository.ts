@@ -50,6 +50,10 @@ export class ProductRepository {
       filters.push(ilike(productTable.productName, `%${query.search}%`));
     }
 
+    if(query.promotionLabel){
+      filters.push(eq(productTable.promotionLabel, query.promotionLabel))
+    }
+
     if (query.categoryId) {
       filters.push(eq(productTable.categoryId, query.categoryId));
     }

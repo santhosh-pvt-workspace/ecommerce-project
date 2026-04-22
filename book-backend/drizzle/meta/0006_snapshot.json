@@ -1,6 +1,6 @@
 {
-  "id": "738c7c8c-4fab-4591-a931-4da913e76eb3",
-  "prevId": "e751e803-357e-4fb7-8a6b-252b17600552",
+  "id": "12ad5a39-bcd2-48b8-b60f-dbb76d972fc9",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -759,7 +759,7 @@
         },
         "promotion_label": {
           "name": "promotion_label",
-          "type": "promotion_label",
+          "type": "promotion_label_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -935,15 +935,15 @@
         "refunded"
       ]
     },
-    "public.promotion_label": {
-      "name": "promotion_label",
+    "public.promotion_label_enum": {
+      "name": "promotion_label_enum",
       "schema": "public",
       "values": [
-        "New Arrival",
-        "Best Seller",
-        "Clearance",
-        "Hot Deal",
-        "Limited Edition"
+        "NEW_ARRIVAL",
+        "BEST_SELLER",
+        "CLEARANCE",
+        "HOT_DEAL",
+        "LIMITED_EDITION"
       ]
     },
     "public.payment_status": {

@@ -15,15 +15,16 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+import { promotionLabelEnum } from '@/database/schema/product.schema';
 
 // ─── Promotion Label Enum ──────────────────────────────────────────────────
 // Keep in sync with the pgEnum in product.schema.ts
 export enum PromotionLabel {
-  NEW_ARRIVAL = 'New Arrival',
-  BEST_SELLER = 'Best Seller',
-  CLEARANCE = 'Clearance',
-  HOT_DEAL = 'Hot Deal',
-  LIMITED_EDITION = 'Limited Edition',
+  NEW_ARRIVAL = 'NEW_ARRIVAL',
+  BEST_SELLER = 'BEST_SELLER',
+  CLEARANCE = 'CLEARANCE',
+  HOT_DEAL = 'HOT_DEAL',
+  LIMITED_EDITION = 'LIMITED_EDITION',
 }
 
 // ─── Create ───────────────────────────────────────────────────────────────
@@ -193,6 +194,11 @@ export class QueryProductDto {
   @IsOptional()
   @IsUUID()
   categoryId?: string;
+
+  @ApiPropertyOptional({ example: 'Best Seller', description: 'Filter by category UUID' })
+  @IsOptional()
+  @IsEnum([promotionLabelEnum])
+  promotionLabel?: PromotionLabel;
 
   @ApiPropertyOptional({ example: 10, description: 'Minimum price filter' })
   @IsOptional()

@@ -12,4 +12,6 @@ export const productQueries = {
     queryKey: ["product", id],
     queryFn: () => productApi.productControllerGetProductById({ id }).then((res) => res.data),
   }),
+
+  
 };

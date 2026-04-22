@@ -106,7 +106,7 @@ export const CartDrawer: React.FC = observer(() => {
                   </div>
                   <div className="font-semibold text-indigo-600">
                     {/* Convert string to number for display if necessary */}
-                    ${(Number(item.priceSnapshot) * item.quantity).toFixed(2)}
+                    ₹{(Number(item.priceSnapshot) * item.quantity).toFixed(2)}
                   </div>
                 </div>
               </div>

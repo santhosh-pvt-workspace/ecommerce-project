@@ -22,6 +22,34 @@
       "when": 1775973307440,
       "tag": "0002_ambitious_black_widow",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1776840349722,
+      "tag": "0003_moaning_arclight",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1776841194724,
+      "tag": "0004_sleepy_sasquatch",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1776842328599,
+      "tag": "0005_outstanding_alex_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1776842400266,
+      "tag": "0006_lowly_beyonder",
+      "breakpoints": true
     }
   ]
 }

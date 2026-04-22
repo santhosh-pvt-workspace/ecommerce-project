@@ -5,12 +5,12 @@ import { integer } from "drizzle-orm/pg-core";
 import { text } from "drizzle-orm/pg-core";
 import { pgTable, serial, varchar } from "drizzle-orm/pg-core";
 
-export const promotionLabelEnum = pgEnum('promotion_label', [
-    'New Arrival',
-    'Best Seller',
-    'Clearance',
-    'Hot Deal',
-    'Limited Edition',
+export const promotionLabelEnum = pgEnum('promotion_label_enum', [
+  'NEW_ARRIVAL',
+  'BEST_SELLER',
+  'CLEARANCE',
+  'HOT_DEAL',
+  'LIMITED_EDITION',
 ]);
 
 export const productTable = pgTable('products', {

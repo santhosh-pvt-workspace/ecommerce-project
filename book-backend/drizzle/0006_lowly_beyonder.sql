@@ -1,6 +1,7 @@
 CREATE TYPE "public"."role" AS ENUM('admin', 'user');--> statement-breakpoint
 CREATE TYPE "public"."status" AS ENUM('active', 'ordered', 'abandoned');--> statement-breakpoint
 CREATE TYPE "public"."order_status" AS ENUM('pending', 'confirmed', 'processing', 'shipped', 'out_for_delivery', 'delivered', 'cancelled', 'failed', 'returned', 'refunded');--> statement-breakpoint
+CREATE TYPE "public"."promotion_label_enum" AS ENUM('NEW_ARRIVAL', 'BEST_SELLER', 'CLEARANCE', 'HOT_DEAL', 'LIMITED_EDITION');--> statement-breakpoint
 CREATE TYPE "public"."payment_status" AS ENUM('paid', 'pending', 'failed');--> statement-breakpoint
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -85,16 +86,21 @@ CREATE TABLE "orders" (
 --> statement-breakpoint
 CREATE TABLE "products" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"title" varchar(50) NOT NULL,
+	"product_name" varchar(255) NOT NULL,
 	"description" text,
 	"image_url" varchar,
+	"image_public_id" varchar,
 	"price" numeric(10, 2) NOT NULL,
 	"stock" integer NOT NULL,
 	"offer_percentage" integer DEFAULT 0,
 	"is_active" boolean DEFAULT true,
-	"author" varchar(50),
-	"pages" integer,
-	"weight" numeric(2, 2),
+	"sold_by" varchar(255),
+	"promotion_label" "promotion_label_enum",
+	"brand" varchar(255),
+	"ingredients" text,
+	"rating" numeric(2, 1) DEFAULT '0',
+	"tags" text[],
+	"special_for" text,
 	"category_id" uuid,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now()

@@ -4,7 +4,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { categoryTable } from './schema/config.schema';
 import { productTable } from './schema/product.schema';
 
-type PromotionLabel = 'New Arrival' | 'Best Seller' | 'Clearance' | 'Hot Deal' | 'Limited Edition';
+type PromotionLabel = 'NEW_ARRIVAL' | 'BEST_SELLER' | 'CLEARANCE' | 'HOT_DEAL' | 'LIMITED_EDITION';
 
 config(); // load .env
 
@@ -44,7 +44,7 @@ async function main() {
       stock: 50,
       brand: 'Apple',
       soldBy: 'Official Store',
-      promotionLabel: 'New Arrival' as PromotionLabel,
+      promotionLabel: 'NEW_ARRIVAL' as PromotionLabel,
       rating: '4.9',
       tags: ['electronics', 'mobile', 'smartphone'],
       specialFor: 'Photography enthusiasts',
@@ -58,7 +58,7 @@ async function main() {
       stock: 30,
       brand: 'Sony',
       soldBy: 'Tech Hub',
-      promotionLabel: 'Best Seller' as PromotionLabel,
+      promotionLabel: 'BEST_SELLER' as PromotionLabel,
       rating: '4.8',
       tags: ['audio', 'headphones', 'wireless'],
       specialFor: 'Commuters and travelers',
@@ -72,7 +72,7 @@ async function main() {
       stock: 100,
       brand: 'Nike',
       soldBy: 'Nike Official',
-      promotionLabel: 'Clearance' as PromotionLabel,
+      promotionLabel: 'CLEARANCE' as PromotionLabel,
       rating: '4.6',
       tags: ['shoes', 'sneakers', 'lifestyle'],
       specialFor: 'Active lifestyle',
@@ -86,7 +86,7 @@ async function main() {
       stock: 20,
       brand: 'Dyson',
       soldBy: 'Home Pro',
-      promotionLabel: 'Hot Deal' as PromotionLabel,
+      promotionLabel: 'HOT_DEAL' as PromotionLabel,
       rating: '4.7',
       tags: ['appliance', 'home', 'vacuum'],
       specialFor: 'Deep cleaning',

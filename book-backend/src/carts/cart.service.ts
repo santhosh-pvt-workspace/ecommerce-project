@@ -1,8 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CartItemsRepository } from './cart-item.repository';
 import { CartRepository } from './cart.repository';
 import { v4 as uuidv4 } from 'uuid';
 import { Response } from 'express';
+import { ProductRepository } from '@/product/product.repository';
 
 
 @Injectable()
@@ -10,6 +11,7 @@ export class CartService {
   constructor(
     private readonly cartRepo: CartRepository,
     private readonly cartItemsRepo: CartItemsRepository,
+    private readonly productRepo : ProductRepository
   ) { }
 
   async getCart(data: { userId?: string; sessionId?: string }, res?: Response) {
@@ -45,7 +47,6 @@ export class CartService {
     sessionId,
     productId,
     quantity,
-    price,
     res,
   }: {
     userId?: string;
@@ -58,11 +59,20 @@ export class CartService {
     // get cart (this will set cookie if it's a new guest session)
     const cart = await this.getCart({ userId, sessionId }, res);
 
+    const product = await this.productRepo.findById(productId);
+
+    if(!product){
+      throw new NotFoundException('Product Not Found');
+    }
+
     // check existing item
     const existingItem = await this.cartItemsRepo.findByCartIdAndProductId(
       cart.id,
       productId,
     );
+
+
+
 
     // if exist update quantity
     if (existingItem) {
@@ -76,7 +86,7 @@ export class CartService {
       cartId: cart.id,
       productId: productId,
       quantity: quantity,
-      priceSnapshot: price,
+      priceSnapshot: product.price,
     });
   }
 
