@@ -70,9 +70,8 @@ export class CreateProductDto {
   @MaxLength(255)
   brand?: string;
 
-  @ApiPropertyOptional({ enum: PromotionLabel, example: PromotionLabel.NEW_ARRIVAL })
-  @IsOptional()
   @IsEnum(PromotionLabel)
+  @IsOptional()
   promotionLabel?: PromotionLabel;
 
   @ApiPropertyOptional({ example: 'NatureCare Store' })
@@ -138,8 +137,6 @@ export class UpdateProductDto {
   @MaxLength(255)
   brand?: string;
 
-  @ApiPropertyOptional({ enum: PromotionLabel, example: PromotionLabel.BEST_SELLER })
-  @IsOptional()
   @IsEnum(PromotionLabel)
   promotionLabel?: PromotionLabel;
 
@@ -195,9 +192,13 @@ export class QueryProductDto {
   @IsUUID()
   categoryId?: string;
 
-  @ApiPropertyOptional({ example: 'Best Seller', description: 'Filter by category UUID' })
+  @ApiPropertyOptional({
+    enum: PromotionLabel,
+    example: PromotionLabel.BEST_SELLER,
+    description: 'Promotion Label'
+  })
+  @IsEnum(PromotionLabel)
   @IsOptional()
-  @IsEnum([promotionLabelEnum])
   promotionLabel?: PromotionLabel;
 
   @ApiPropertyOptional({ example: 10, description: 'Minimum price filter' })

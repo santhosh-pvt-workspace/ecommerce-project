@@ -1,11 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
-import { productQueries } from "@/queries/product/product.query";
+import { productQueries } from "@/queries/product.query";
 import CategorySection from "@/components/Home/CategorySection";
 import HeroSection from "@/components/HeroSection";
 import { ProductCard } from "@/components/Home/ProductCard";
+import { useNavigate } from "react-router-dom";
+import { ProductControllerCreateProductPromotionLabelEnum, ProductControllerGetAllProductsPromotionLabelEnum } from "@/_api";
+
+export const PROMOTION_LABEL = {
+  NEW_ARRIVAL: "NEW_ARRIVAL",
+  BEST_SELLER: "BEST_SELLER",
+  CLEARANCE: "CLEARANCE",
+  HOT_DEAL: "HOT_DEAL",
+  LIMITED_EDITION: "LIMITED_EDITION",
+} as const;
 
 export const HomePage = () => {
-  const { data, isLoading, isError, error } = useQuery(productQueries.all());
+
+  const navigate = useNavigate();
+
+  const { data : product, isLoading, isError, error } = useQuery(productQueries.all());
 
   if (isLoading) {
     return (
@@ -47,7 +60,7 @@ export const HomePage = () => {
           </div>
 
           {/* Empty State */}
-          {data?.data?.length === 0 ? (
+          {product?.data?.length === 0 ? (
             <p className="text-center text-muted-foreground py-10">
               No products available
             </p>
@@ -62,13 +75,15 @@ export const HomePage = () => {
           gap-5 sm:gap-6
         "
             >
-              {data?.data?.map((product, index) => (
-                <ProductCard
-                  key={product.id}
-                  product={product as any} // (keep for now if skipping mapping)
-                  index={index}
-                />
-              ))}
+              {product?.data
+  ?.filter(
+    (p) =>
+      p.promotionLabel ===
+      ProductControllerGetAllProductsPromotionLabelEnum.bestSeller
+  )
+  .map((product) => (
+    <ProductCard key={product.id} product={product as any} />
+  ))}
             </div>
           )}
         </div>

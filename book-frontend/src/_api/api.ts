@@ -73,10 +73,10 @@ export interface PaginationMetaDto {
 export interface ProductResponseDto {
     'id': string;
     'productName': string;
-    'description'?: string;
+    'description'?: object;
     'imageUrl'?: object;
     'imagePublicId'?: object;
-    'price': string;
+    'price': object;
     'stock': number;
     'offerPercentage'?: object;
     'isActive': object;
@@ -121,7 +121,6 @@ export interface UpdateProductDto {
     'price'?: number;
     'stock'?: number;
     'brand'?: string;
-    'promotionLabel'?: UpdateProductDtoPromotionLabelEnum;
     'soldBy'?: string;
     'ingredients'?: string;
     'specialFor'?: string;
@@ -130,17 +129,6 @@ export interface UpdateProductDto {
     'imageUrl'?: string;
     'imagePublicId'?: string;
 }
-
-export const UpdateProductDtoPromotionLabelEnum = {
-    newArrival: 'New Arrival',
-    bestSeller: 'Best Seller',
-    clearance: 'Clearance',
-    hotDeal: 'Hot Deal',
-    limitedEdition: 'Limited Edition',
-} as const;
-
-export type UpdateProductDtoPromotionLabelEnum = typeof UpdateProductDtoPromotionLabelEnum[keyof typeof UpdateProductDtoPromotionLabelEnum];
-
 export interface UpdateStatusDto {
     /**
      * Set product active status
@@ -192,14 +180,14 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -224,7 +212,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -237,7 +225,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(addToCartDto, localVarRequestOptions, configuration)
 
             return {
@@ -264,14 +252,14 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -293,7 +281,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -301,7 +289,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -327,14 +315,14 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -360,14 +348,14 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -396,7 +384,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -405,7 +393,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updateCartItemDto, localVarRequestOptions, configuration)
 
             return {
@@ -419,7 +407,7 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
 /**
  * CartApi - functional programming interface
  */
-export const CartApiFp = function (configuration?: Configuration) {
+export const CartApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CartApiAxiosParamCreator(configuration)
     return {
         /**
@@ -762,7 +750,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
             const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
@@ -772,58 +760,58 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-            if (image !== undefined) {
+            if (image !== undefined) { 
                 localVarFormParams.append('image', image as any);
             }
 
-            if (productName !== undefined) {
+            if (productName !== undefined) { 
                 localVarFormParams.append('productName', productName as any);
             }
 
-            if (description !== undefined) {
+            if (description !== undefined) { 
                 localVarFormParams.append('description', description as any);
             }
 
-            if (price !== undefined) {
+            if (price !== undefined) { 
                 localVarFormParams.append('price', price as any);
             }
 
-            if (stock !== undefined) {
+            if (stock !== undefined) { 
                 localVarFormParams.append('stock', stock as any);
             }
 
-            if (categoryId !== undefined) {
+            if (categoryId !== undefined) { 
                 localVarFormParams.append('categoryId', categoryId as any);
             }
 
-            if (brand !== undefined) {
+            if (brand !== undefined) { 
                 localVarFormParams.append('brand', brand as any);
             }
 
-            if (promotionLabel !== undefined) {
+            if (promotionLabel !== undefined) { 
                 localVarFormParams.append('promotionLabel', promotionLabel as any);
             }
 
-            if (soldBy !== undefined) {
+            if (soldBy !== undefined) { 
                 localVarFormParams.append('soldBy', soldBy as any);
             }
 
-            if (ingredients !== undefined) {
+            if (ingredients !== undefined) { 
                 localVarFormParams.append('ingredients', ingredients as any);
             }
 
-            if (specialFor !== undefined) {
+            if (specialFor !== undefined) { 
                 localVarFormParams.append('specialFor', specialFor as any);
             }
 
-            if (offerPercentage !== undefined) {
+            if (offerPercentage !== undefined) { 
                 localVarFormParams.append('offerPercentage', offerPercentage as any);
             }
             localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = localVarFormParams;
 
             return {
@@ -836,6 +824,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * @summary [Admin] Get all products including inactive
          * @param {string} [search] Search by product name (ILIKE)
          * @param {string} [categoryId] Filter by category UUID
+         * @param {ProductControllerGetAdminProductsPromotionLabelEnum} [promotionLabel] Promotion Label
          * @param {number} [minPrice] Minimum price filter
          * @param {number} [maxPrice] Maximum price filter
          * @param {ProductControllerGetAdminProductsSortByEnum} [sortBy] 
@@ -845,7 +834,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        productControllerGetAdminProducts: async (search?: string, categoryId?: string, minPrice?: number, maxPrice?: number, sortBy?: ProductControllerGetAdminProductsSortByEnum, order?: ProductControllerGetAdminProductsOrderEnum, page?: number, limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        productControllerGetAdminProducts: async (search?: string, categoryId?: string, promotionLabel?: ProductControllerGetAdminProductsPromotionLabelEnum, minPrice?: number, maxPrice?: number, sortBy?: ProductControllerGetAdminProductsSortByEnum, order?: ProductControllerGetAdminProductsOrderEnum, page?: number, limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/products/admin/list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -854,7 +843,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -870,6 +859,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['categoryId'] = categoryId;
             }
 
+            if (promotionLabel !== undefined) {
+                localVarQueryParameter['promotionLabel'] = promotionLabel;
+            }
+
             if (minPrice !== undefined) {
                 localVarQueryParameter['minPrice'] = minPrice;
             }
@@ -898,7 +891,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -910,6 +903,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * @summary Get all active products
          * @param {string} [search] Search by product name (ILIKE)
          * @param {string} [categoryId] Filter by category UUID
+         * @param {ProductControllerGetAllProductsPromotionLabelEnum} [promotionLabel] Promotion Label
          * @param {number} [minPrice] Minimum price filter
          * @param {number} [maxPrice] Maximum price filter
          * @param {ProductControllerGetAllProductsSortByEnum} [sortBy] 
@@ -919,7 +913,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        productControllerGetAllProducts: async (search?: string, categoryId?: string, minPrice?: number, maxPrice?: number, sortBy?: ProductControllerGetAllProductsSortByEnum, order?: ProductControllerGetAllProductsOrderEnum, page?: number, limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        productControllerGetAllProducts: async (search?: string, categoryId?: string, promotionLabel?: ProductControllerGetAllProductsPromotionLabelEnum, minPrice?: number, maxPrice?: number, sortBy?: ProductControllerGetAllProductsSortByEnum, order?: ProductControllerGetAllProductsOrderEnum, page?: number, limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/products`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -928,7 +922,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -938,6 +932,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             if (categoryId !== undefined) {
                 localVarQueryParameter['categoryId'] = categoryId;
+            }
+
+            if (promotionLabel !== undefined) {
+                localVarQueryParameter['promotionLabel'] = promotionLabel;
             }
 
             if (minPrice !== undefined) {
@@ -968,7 +966,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -994,7 +992,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1002,7 +1000,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1028,7 +1026,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1039,7 +1037,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1068,7 +1066,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1081,7 +1079,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updateProductDto, localVarRequestOptions, configuration)
 
             return {
@@ -1111,7 +1109,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1124,7 +1122,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updateStatusDto, localVarRequestOptions, configuration)
 
             return {
@@ -1154,7 +1152,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1167,7 +1165,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updateStockDto, localVarRequestOptions, configuration)
 
             return {
@@ -1181,7 +1179,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 /**
  * ProductsApi - functional programming interface
  */
-export const ProductsApiFp = function (configuration?: Configuration) {
+export const ProductsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProductsApiAxiosParamCreator(configuration)
     return {
         /**
@@ -1212,6 +1210,7 @@ export const ProductsApiFp = function (configuration?: Configuration) {
          * @summary [Admin] Get all products including inactive
          * @param {string} [search] Search by product name (ILIKE)
          * @param {string} [categoryId] Filter by category UUID
+         * @param {ProductControllerGetAdminProductsPromotionLabelEnum} [promotionLabel] Promotion Label
          * @param {number} [minPrice] Minimum price filter
          * @param {number} [maxPrice] Maximum price filter
          * @param {ProductControllerGetAdminProductsSortByEnum} [sortBy] 
@@ -1221,8 +1220,8 @@ export const ProductsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async productControllerGetAdminProducts(search?: string, categoryId?: string, minPrice?: number, maxPrice?: number, sortBy?: ProductControllerGetAdminProductsSortByEnum, order?: ProductControllerGetAdminProductsOrderEnum, page?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProductResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.productControllerGetAdminProducts(search, categoryId, minPrice, maxPrice, sortBy, order, page, limit, options);
+        async productControllerGetAdminProducts(search?: string, categoryId?: string, promotionLabel?: ProductControllerGetAdminProductsPromotionLabelEnum, minPrice?: number, maxPrice?: number, sortBy?: ProductControllerGetAdminProductsSortByEnum, order?: ProductControllerGetAdminProductsOrderEnum, page?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProductResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productControllerGetAdminProducts(search, categoryId, promotionLabel, minPrice, maxPrice, sortBy, order, page, limit, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProductsApi.productControllerGetAdminProducts']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1232,6 +1231,7 @@ export const ProductsApiFp = function (configuration?: Configuration) {
          * @summary Get all active products
          * @param {string} [search] Search by product name (ILIKE)
          * @param {string} [categoryId] Filter by category UUID
+         * @param {ProductControllerGetAllProductsPromotionLabelEnum} [promotionLabel] Promotion Label
          * @param {number} [minPrice] Minimum price filter
          * @param {number} [maxPrice] Maximum price filter
          * @param {ProductControllerGetAllProductsSortByEnum} [sortBy] 
@@ -1241,8 +1241,8 @@ export const ProductsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async productControllerGetAllProducts(search?: string, categoryId?: string, minPrice?: number, maxPrice?: number, sortBy?: ProductControllerGetAllProductsSortByEnum, order?: ProductControllerGetAllProductsOrderEnum, page?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProductResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.productControllerGetAllProducts(search, categoryId, minPrice, maxPrice, sortBy, order, page, limit, options);
+        async productControllerGetAllProducts(search?: string, categoryId?: string, promotionLabel?: ProductControllerGetAllProductsPromotionLabelEnum, minPrice?: number, maxPrice?: number, sortBy?: ProductControllerGetAllProductsSortByEnum, order?: ProductControllerGetAllProductsOrderEnum, page?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProductResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productControllerGetAllProducts(search, categoryId, promotionLabel, minPrice, maxPrice, sortBy, order, page, limit, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProductsApi.productControllerGetAllProducts']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1341,7 +1341,7 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          * @throws {RequiredError}
          */
         productControllerGetAdminProducts(requestParameters: ProductsApiProductControllerGetAdminProductsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedProductResponseDto> {
-            return localVarFp.productControllerGetAdminProducts(requestParameters.search, requestParameters.categoryId, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sortBy, requestParameters.order, requestParameters.page, requestParameters.limit, options).then((request) => request(axios, basePath));
+            return localVarFp.productControllerGetAdminProducts(requestParameters.search, requestParameters.categoryId, requestParameters.promotionLabel, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sortBy, requestParameters.order, requestParameters.page, requestParameters.limit, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns paginated active products with optional filters (search, category, price range, sorting)
@@ -1351,7 +1351,7 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          * @throws {RequiredError}
          */
         productControllerGetAllProducts(requestParameters: ProductsApiProductControllerGetAllProductsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedProductResponseDto> {
-            return localVarFp.productControllerGetAllProducts(requestParameters.search, requestParameters.categoryId, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sortBy, requestParameters.order, requestParameters.page, requestParameters.limit, options).then((request) => request(axios, basePath));
+            return localVarFp.productControllerGetAllProducts(requestParameters.search, requestParameters.categoryId, requestParameters.promotionLabel, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sortBy, requestParameters.order, requestParameters.page, requestParameters.limit, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns a single active product by its UUID
@@ -1453,6 +1453,11 @@ export interface ProductsApiProductControllerGetAdminProductsRequest {
     readonly categoryId?: string
 
     /**
+     * Promotion Label
+     */
+    readonly promotionLabel?: ProductControllerGetAdminProductsPromotionLabelEnum
+
+    /**
      * Minimum price filter
      */
     readonly minPrice?: number
@@ -1484,6 +1489,11 @@ export interface ProductsApiProductControllerGetAllProductsRequest {
      * Filter by category UUID
      */
     readonly categoryId?: string
+
+    /**
+     * Promotion Label
+     */
+    readonly promotionLabel?: ProductControllerGetAllProductsPromotionLabelEnum
 
     /**
      * Minimum price filter
@@ -1567,7 +1577,7 @@ export class ProductsApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public productControllerGetAdminProducts(requestParameters: ProductsApiProductControllerGetAdminProductsRequest = {}, options?: RawAxiosRequestConfig) {
-        return ProductsApiFp(this.configuration).productControllerGetAdminProducts(requestParameters.search, requestParameters.categoryId, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sortBy, requestParameters.order, requestParameters.page, requestParameters.limit, options).then((request) => request(this.axios, this.basePath));
+        return ProductsApiFp(this.configuration).productControllerGetAdminProducts(requestParameters.search, requestParameters.categoryId, requestParameters.promotionLabel, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sortBy, requestParameters.order, requestParameters.page, requestParameters.limit, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1578,7 +1588,7 @@ export class ProductsApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public productControllerGetAllProducts(requestParameters: ProductsApiProductControllerGetAllProductsRequest = {}, options?: RawAxiosRequestConfig) {
-        return ProductsApiFp(this.configuration).productControllerGetAllProducts(requestParameters.search, requestParameters.categoryId, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sortBy, requestParameters.order, requestParameters.page, requestParameters.limit, options).then((request) => request(this.axios, this.basePath));
+        return ProductsApiFp(this.configuration).productControllerGetAllProducts(requestParameters.search, requestParameters.categoryId, requestParameters.promotionLabel, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sortBy, requestParameters.order, requestParameters.page, requestParameters.limit, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1645,6 +1655,14 @@ export const ProductControllerCreateProductPromotionLabelEnum = {
     limitedEdition: 'Limited Edition',
 } as const;
 export type ProductControllerCreateProductPromotionLabelEnum = typeof ProductControllerCreateProductPromotionLabelEnum[keyof typeof ProductControllerCreateProductPromotionLabelEnum];
+export const ProductControllerGetAdminProductsPromotionLabelEnum = {
+    newArrival: 'NEW_ARRIVAL',
+    bestSeller: 'BEST_SELLER',
+    clearance: 'CLEARANCE',
+    hotDeal: 'HOT_DEAL',
+    limitedEdition: 'LIMITED_EDITION',
+} as const;
+export type ProductControllerGetAdminProductsPromotionLabelEnum = typeof ProductControllerGetAdminProductsPromotionLabelEnum[keyof typeof ProductControllerGetAdminProductsPromotionLabelEnum];
 export const ProductControllerGetAdminProductsSortByEnum = {
     price: 'price',
     rating: 'rating',
@@ -1656,6 +1674,14 @@ export const ProductControllerGetAdminProductsOrderEnum = {
     desc: 'desc',
 } as const;
 export type ProductControllerGetAdminProductsOrderEnum = typeof ProductControllerGetAdminProductsOrderEnum[keyof typeof ProductControllerGetAdminProductsOrderEnum];
+export const ProductControllerGetAllProductsPromotionLabelEnum = {
+    newArrival: 'NEW_ARRIVAL',
+    bestSeller: 'BEST_SELLER',
+    clearance: 'CLEARANCE',
+    hotDeal: 'HOT_DEAL',
+    limitedEdition: 'LIMITED_EDITION',
+} as const;
+export type ProductControllerGetAllProductsPromotionLabelEnum = typeof ProductControllerGetAllProductsPromotionLabelEnum[keyof typeof ProductControllerGetAllProductsPromotionLabelEnum];
 export const ProductControllerGetAllProductsSortByEnum = {
     price: 'price',
     rating: 'rating',
@@ -1689,7 +1715,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1697,7 +1723,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1719,7 +1745,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1731,7 +1757,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1756,7 +1782,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1764,7 +1790,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(loginRequestDto, localVarRequestOptions, configuration)
 
             return {
@@ -1790,7 +1816,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1799,7 +1825,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(registerRequestDto, localVarRequestOptions, configuration)
 
             return {
@@ -1813,7 +1839,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
 /**
  * UserApi - functional programming interface
  */
-export const UserApiFp = function (configuration?: Configuration) {
+export const UserApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserApiAxiosParamCreator(configuration)
     return {
         /**

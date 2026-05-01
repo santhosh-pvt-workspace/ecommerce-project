@@ -1,7 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { productTable } from '@/database/schema/product.schema';
+import { productTable, promotionLabelEnum } from '@/database/schema/product.schema';
+import { Product } from '../product.repository';
+// import { PromotionLabel } from './product.request.dto';
 
-type Product = typeof productTable.$inferSelect;
+export type PromotionLabel =
+  typeof promotionLabelEnum.enumValues[number];
 
 // ─── Single Product Response ───────────────────────────────────────────────
 export class ProductResponseDto {
@@ -36,7 +39,7 @@ export class ProductResponseDto {
   soldBy: string | null;
 
   @ApiPropertyOptional({ example: 'New Arrival' })
-  promotionLabel: string | null;
+  promotionLabel: PromotionLabel | null;
 
   @ApiPropertyOptional({ example: 'Moroccan Gold' })
   brand: string | null;

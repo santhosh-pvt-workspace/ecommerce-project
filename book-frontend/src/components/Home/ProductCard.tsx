@@ -1,6 +1,7 @@
 import { useAddToCart } from '@/queries/cartQueries';
 import { motion } from 'framer-motion';
 import { Star, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 type Product = {
   id: string;
@@ -17,6 +18,8 @@ type Product = {
 export const ProductCard = ({ product, index = 0 }: { product: Product; index?: number }) => {
 
   const { mutate : addToCart } = useAddToCart();
+
+  const navigate = useNavigate();
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -47,6 +50,8 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
       initial="hidden"
       animate="visible"
       className="h-full"
+      onClick={() => navigate(`/products/${product.id}`)}
+      
     >
       <motion.div
         whileHover={{ y: -8 }}
